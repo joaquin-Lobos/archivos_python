@@ -17,12 +17,22 @@ __version__ = "1.2"
 
 import csv
 import re
+def contar_lineas(file1, file2 = None):
+    cantidad_lineas = 0
+
+    for i in file1:
+        if file2 != None:
+            file2.write(i)
+        cantidad_lineas += 1   
+    return cantidad_lineas
+    
 
 
 def ej1():
     # Ejercicios con archivos txt
-    cantidad_lineas = 0
-
+    file = open("texto.txt", "r")
+    print("la cantidad de lineas en el texto es:", contar_lineas(file) )  
+    file.close()
     '''
     Realizar un prorgrama que cuenta la cantidad de líneas
     de un archivo. Abra el archivo "notas.txt" en modo "lectura",
@@ -39,7 +49,17 @@ def ej1():
 
 def ej2():
     # Ejercicios con archivos txt
-    cantidad_lineas = 0
+
+    fi = open("notas.txt", "r")
+    fo = open("copia_nota.txt", "w")
+   
+    print(contar_lineas(fi, fo))
+    
+    print("se copió el contenido del archivo exitosamente")
+
+    fo.close()
+    fi.close()
+
     '''
     Copy paste!!
     Deberá abrir dos archivo txt, uno para lectura (fi) y otro
@@ -63,7 +83,19 @@ def ej2():
 
 def ej3():
     # Ejercicios con archivos CSV
-    archivo = 'propiedades.csv'
+    with open('propiedades.csv') as csvfile:
+        data = list(csv.DictReader(csvfile))
+    dos_ambientes = 0
+    tres_ambientes = 1
+    for i in data:
+        if i.get("ambientes") == "2":
+            dos_ambientes += 1
+        elif i.get("ambientes") == "3":
+            tres_ambientes +=1
+
+
+    print("la cantiad de departamentos con dos ambientes es:", dos_ambientes)
+    print("la cantidad de departamentos con dos ambientes es:", tres_ambientes)
     '''
     Realice un programa que abra el archivo CSV "propiedades.csv"
     en modo lectura. Recorrar dicho archivo y contar
@@ -76,7 +108,14 @@ def ej3():
 def ej4():
     # Ejercicios con diccionarios
     inventario = {'manzanas': 6}
-
+    while True:
+        fruta_nueva = str(input('ingresar el tipo de fruta o verdura:\n'))
+        if fruta_nueva == "fin":
+            break
+        stock = int(input('ingresar el stock:\n'))
+        inventario[fruta_nueva] = stock
+    
+    print(inventario)
     '''
     Realice un programa que pida por consola
     el nombre de una fruta o verdura y luego
@@ -88,17 +127,31 @@ def ej4():
     de ejemplo.
     Esta operacion se debe realizar en un bucle
     hasta ingresar como fruta/verdura la palabra "FIN"
-
     '''
-
+    
     # En el bucle realizar:
     # Generar y completar el diccionario con las frutas y cantidades
     # ingresadas por consola hasta ingresar la palabra "FIN"
 
-
 def ej5():
     # Ejercicios con archivos CSV
-    inventario = {'Fruta Verdura': 'manzana', 'Cantidad': 10}
+    inventario_csv = open("inventario.csv", "w", newline='')
+    header = ["fruta verdura", "cantidad"]
+    writer = csv.DictWriter(inventario_csv, fieldnames=header)
+    writer.writerow({"fruta verdura": "fruta verdura", "cantidad": "cantidad"})
+
+
+    while True:
+        fruta_nueva = str(input("ingresar el tipo de fruta o verdura:\n"))
+        if fruta_nueva == "fin":
+            break
+        stock = int(input("ingresar el stock:\n"))
+        writer.writerow({"fruta verdura": fruta_nueva, "cantidad": stock})
+        
+    inventario_csv.close()
+
+
+
 
     '''
     Parecido al el ejercicio anterior, genere un archivo CSV
@@ -138,7 +191,7 @@ def ej5():
 
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
-    ej1()
+    #ej1()
     #ej2()
     #ej3()
     #ej4()

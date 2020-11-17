@@ -15,10 +15,19 @@ __author__ = "Inove Coding School"
 __email__ = "alumnos@inove.com.ar"
 __version__ = "1.3"
 
+import csv
+import re
 
 def ej1():
     print("Cuenta caracteres")
     cantidad_letras = 0
+    file = open("texto.txt", "r")
+
+    for i in file:
+        cantidad_letras += len(i)
+
+    print("la cantidad de caracteres en el archivo es de:", cantidad_letras)
+
 
     '''
     Realizar un prorgrama que cuenta la cantidad de caracteres
@@ -33,6 +42,19 @@ def ej1():
 def ej2():
     print("Transcribir!")
     cantidad_letras = 0
+    file = open("archivo_de_texto", "w")
+
+    while True:
+        texto = str(input("ingrese un texto:\n"))
+        if texto == "":
+            break
+        file.write(texto + "\n")
+        cantidad_letras += len(texto)
+        
+
+    print(cantidad_letras)
+
+
     '''
     Deberá abrir un archivo txt para escritura (un archivo nuevo)
     Luego mediante un bucle deberá pedir por consola que
@@ -54,7 +76,38 @@ def ej2():
 def ej3():
     print("Escrutinio de los alquileres de Capital Federal")
     cantidad_ambientes = 2
+    moneda = "ARS"
+    departamentos = []
+    total_precios = 0.0
+    precio_maximo = None
+    precio_minimo = None
+    with open('propiedades.csv') as propiedades:
+        data = list(csv.DictReader(propiedades))
+        for i in data:
+            if (i.get("ambientes") == str(cantidad_ambientes)) and (i.get("moneda") == moneda):
+                departamentos.append(i)
+    
+    for i in departamentos:
+        precio = float(i.get("precio"))
+        total_precios += float(i.get("precio"))
+        if precio_maximo == None:
+            precio_maximo = precio
+        elif precio_maximo <= precio:
+            precio_maximo = precio
+        
+        if precio_minimo == None:
+            precio_minimo = precio
+        elif precio_minimo >= precio:
+            precio_minimo = precio
 
+   
+
+    print("hay", len(departamentos), "departamentos con", cantidad_ambientes, "ambientes y con el precio en", moneda)
+    print("el promedio de los precios de estos departamentos es:", int(total_precios / float(len(departamentos))), moneda)
+    print("precio maximo:", precio_maximo,"precio minimo", precio_minimo)
+    propiedades.close()
+
+            
     '''
     Realizar un prorgrama que solicite la cantidad de
     ambientes de los alquileres que se desean analizar.
